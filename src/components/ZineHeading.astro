@@ -1,0 +1,7 @@
+---
+interface Props { text: string; script?: string; as?: "h1" | "h2" | "h3"; size?: "xl" | "m"; }
+const { text, script, as: Tag = "h1", size = "xl" } = Astro.props;
+---
+<Tag class={`display ${size === "m" ? "display-m" : ""}`}>
+  {text}{script && <span class="script-word" aria-hidden="true">{script}</span>}
+</Tag>

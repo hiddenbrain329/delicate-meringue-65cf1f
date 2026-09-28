@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* ALL COLORS LIVE IN THIS FILE. Components reference variables only. */
+:root {
+  /* core */
+  --rv-black: #0B0B0C;
+  --rv-red: #D9042B;
+  --rv-cream: #F4EDE4;
+
+  /* member accents: stickers, pills, dots, chart markers only */
+  --m-pink: #FF8FB8;
+  --m-yellow: #FFD23F;
+  --m-blue: #4DA3FF;
+  --m-green: #4BDB8B;
+  --m-purple: #B58CFF;
+
+  /* effects */
+  --grain-opacity: 0.10;
+
+  /* semantic defaults = velvet world (black ground, red accent) */
+  --ground: var(--rv-black);
+  --ink: var(--rv-cream);      /* body text is ALWAYS cream */
+  --display: var(--rv-red);    /* large display type only */
+  --line: var(--rv-cream);     /* outlines, rules */
+  --on-accent: var(--rv-black);/* text on member-accent stickers/pills */
+  --panel: var(--rv-black);    /* charts + widgets keep a black surface in both worlds */
+  --focus: var(--rv-cream);
+}
+
+/* red world = red ground, black accent */
+[data-world="red"] {
+  --ground: var(--rv-red);
+  --display: var(--rv-black);
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-ink: var(--ink);
+  --color-line: var(--line);
+  --color-panel: var(--panel);
+  --color-pink: var(--m-pink);
+  --color-yellow: var(--m-yellow);
+  --color-blue: var(--m-blue);
+  --color-green: var(--m-green);
+  --color-purple: var(--m-purple);
+
+  /* compatibility aliases so untouched components keep compiling.
+     Remove them as you migrate the rest of src/. */
+  --color-cream-50: var(--rv-cream);
+  --color-cream-100: var(--rv-cream);
+  --color-ink-950: var(--rv-black);
+  --color-velvet-700: var(--rv-black);
+  --color-velvet-900: var(--rv-black);
+  --color-velvet-950: var(--rv-black);
+  --color-red-500: var(--rv-red);
+
+  --font-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --font-script: "Pinyon Script", "Snell Roundhand", cursive;
+  --font-body: "Inter Tight", system-ui, sans-serif;
+}

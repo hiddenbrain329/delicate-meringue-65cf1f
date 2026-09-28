@@ -1,0 +1,5 @@
+---
+interface Props { dot?: "pink" | "yellow" | "blue" | "green" | "purple"; }
+const { dot } = Astro.props;
+---
+<span class="pill">{dot && <i class="dot" style={`--dot: var(--m-${dot})`}></i>}<slot /></span>

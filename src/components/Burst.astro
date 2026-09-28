@@ -1,0 +1,5 @@
+---
+interface Props { color?: "pink" | "yellow" | "blue" | "green" | "purple"; size?: string; }
+const { color = "yellow", size = "6rem" } = Astro.props;
+---
+<div class="burst" style={`--burst-bg: var(--m-${color}); --size: ${size}`}><slot /></div>

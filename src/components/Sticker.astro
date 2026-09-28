@@ -1,0 +1,5 @@
+---
+interface Props { color?: "pink" | "yellow" | "blue" | "green" | "purple"; tilt?: number; }
+const { color = "yellow", tilt = -4 } = Astro.props;
+---
+<span class="sticker" style={`--sticker-bg: var(--m-${color}); --tilt: ${tilt}deg`}><slot /></span>

@@ -1,0 +1,134 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SongCard from "../components/SongCard.astro";
+import { songs } from "../data/songs";
+import { newsItems } from "../data/news";
+import { formatDate, timeAgo } from "../lib/format";
+
+const featured = [...songs].sort((a, b) => b.ratings.avgQuality - a.ratings.avgQuality).slice(0, 6);
+const latestNews = [...newsItems].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 3);
+const latestSong = [...songs].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0];
+
+const pillars = [
+  {
+    title: "Music",
+    href: "/music",
+    body: "Every era from Happiness to today, plus Irene & Seulgi and solo work — filterable by era, release type, and Red vs. Velvet concept.",
+  },
+  {
+    title: "Videos",
+    href: "/videos",
+    body: "MVs, performances, variety, and vlogs pulled from the official channels, embedded with the official player.",
+  },
+  {
+    title: "News feed",
+    href: "/news",
+    body: "Official uploads, verified social posts, and K-pop press, aggregated automatically and deduped every few hours.",
+  },
+  {
+    title: "Leaderboard",
+    href: "/leaderboard",
+    body: "Fans rate every title track on quality and where it sits on the Red-to-Velvet spectrum — see how the fandom's votes compare to the official concept.",
+  },
+];
+---
+
+<Layout title="Home">
+  <section class="relative overflow-hidden">
+    <img
+      src="/.netlify/images?url=/img/hero-velvet.png&w=1600&fm=webp&q=80"
+      alt=""
+      class="absolute inset-0 h-full w-full object-cover opacity-45"
+      aria-hidden="true"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-velvet-950/40 via-velvet-950/70 to-velvet-950"></div>
+    <div class="relative mx-auto max-w-6xl px-4 sm:px-6 py-20 sm:py-28">
+      <span class="inline-flex items-center rounded-full border border-white/20 bg-black/20 px-3 py-1 text-xs font-medium text-cream-50/80 backdrop-blur-sm">
+        Unofficial fan project · not affiliated with SM Entertainment
+      </span>
+      <h1 class="mt-5 max-w-2xl font-display text-4xl font-semibold leading-tight text-cream-50 sm:text-6xl">
+        Everything <span class="text-gradient-rv">Red Velvet</span>, in one hub.
+      </h1>
+      <p class="mt-5 max-w-xl text-lg text-cream-100/75">
+        Discography, official video, a live news feed, and ReVeluv Hub's
+        signature feature: a two-axis song leaderboard where fans rate quality
+        and vote on exactly how "Red" or how "Velvet" each track really is.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/music" class="rounded-full bg-gradient-to-r from-red-500 to-velvet-700 px-6 py-3 text-sm font-semibold text-cream-50 hover:opacity-90">
+          Browse the discography
+        </a>
+        <a href="/leaderboard" class="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-cream-50 hover:bg-white/5">
+          See the leaderboard
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-16">
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {pillars.map((p) => (
+        <a href={p.href} class="group rounded-2xl border border-white/10 bg-velvet-900/50 p-5 transition-colors hover:border-white/25">
+          <h2 class="font-display text-lg font-semibold text-cream-50 group-hover:text-gradient-rv">{p.title}</h2>
+          <p class="mt-2 text-sm text-cream-100/60">{p.body}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-8">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="font-display text-2xl font-semibold text-cream-50">Fan favorites</h2>
+        <p class="mt-1 text-sm text-cream-100/55">Top-rated tracks by the fan-voted quality score.</p>
+      </div>
+      <a href="/music" class="shrink-0 text-sm font-medium text-cream-100/70 hover:text-cream-50">
+        View all →
+      </a>
+    </div>
+    <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {featured.map((song) => (
+        <SongCard song={song} />
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-8">
+    <div class="rounded-2xl border border-white/10 bg-velvet-900/50 p-6 sm:p-8">
+      <p class="text-xs font-medium uppercase tracking-wide text-cream-100/50">Latest release</p>
+      <div class="mt-2 flex flex-wrap items-baseline justify-between gap-3">
+        <h2 class="font-display text-2xl font-semibold text-cream-50">
+          "{latestSong.title}" · <span class="text-cream-100/60">{latestSong.album}</span>
+        </h2>
+        <span class="text-sm text-cream-100/50">{formatDate(latestSong.releaseDate)}</span>
+      </div>
+      <a href={`/music/${latestSong.slug}`} class="mt-4 inline-block text-sm font-semibold text-red-400 hover:underline">
+        Open song page & rate it →
+      </a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-8 pb-20">
+    <div class="flex items-end justify-between gap-4">
+      <h2 class="font-display text-2xl font-semibold text-cream-50">From the news feed</h2>
+      <a href="/news" class="text-sm font-medium text-cream-100/70 hover:text-cream-50">
+        View all →
+      </a>
+    </div>
+    <ul class="mt-6 space-y-3">
+      {latestNews.map((item) => (
+        <li>
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex flex-col gap-1 rounded-xl border border-white/10 bg-velvet-900/50 p-4 hover:border-white/25 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <p class="text-sm font-medium text-cream-50">{item.headline}</p>
+            <span class="shrink-0 text-xs text-cream-100/40">{timeAgo(item.publishedAt)}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Layout>

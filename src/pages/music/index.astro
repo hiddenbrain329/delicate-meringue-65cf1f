@@ -1,0 +1,20 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import MusicBrowser from "../../components/MusicBrowser";
+import { songs } from "../../data/songs";
+---
+
+<Layout title="Music" description="The full Red Velvet discography — group, Irene & Seulgi, and solo releases — filterable by era, release type, and Red vs. Velvet concept.">
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16">
+    <p class="text-xs font-medium uppercase tracking-wide text-cream-100/50">Discography</p>
+    <h1 class="mt-2 font-display text-3xl font-semibold text-cream-50 sm:text-4xl">Every era, one browser.</h1>
+    <p class="mt-3 max-w-2xl text-cream-100/65">
+      From <em>Happiness</em> through <em>Velvet Summer</em>, plus Irene &amp; Seulgi and solo work. Filter by
+      era, release type, or where fans have placed each track on the Red-to-Velvet spectrum.
+    </p>
+
+    <div class="mt-10">
+      <MusicBrowser songs={songs} client:load />
+    </div>
+  </section>
+</Layout>

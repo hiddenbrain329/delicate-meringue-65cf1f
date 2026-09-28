@@ -1,0 +1,48 @@
+---
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "ReVeluv Hub — an unofficial fan hub for Red Velvet: music, videos, a live news feed, and the fan-voted Red-to-Velvet leaderboard.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} · ReVeluv Hub</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={`${title} · ReVeluv Hub`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-cream-50 focus:text-ink-950 focus:px-4 focus:py-2 focus:rounded-md"
+    >
+      Skip to content
+    </a>
+    <SiteHeader />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

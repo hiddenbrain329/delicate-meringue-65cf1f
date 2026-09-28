@@ -1,0 +1,21 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import NewsTabs from "../../components/NewsTabs";
+import { newsItems } from "../../data/news";
+---
+
+<Layout title="News" description="Official uploads, verified social posts, and K-pop press about Red Velvet, aggregated in one feed.">
+  <section class="mx-auto max-w-3xl px-4 sm:px-6 py-12 sm:py-16">
+    <p class="text-xs font-medium uppercase tracking-wide text-cream-100/50">News feed</p>
+    <h1 class="mt-2 font-display text-3xl font-semibold text-cream-50 sm:text-4xl">What's happening now.</h1>
+    <p class="mt-3 text-cream-100/65">
+      Headlines and links only — we never republish full articles. In production this feed refreshes
+      automatically every few hours from official channel uploads, verified social accounts, and K-pop
+      press; the items below are a seed sample while that pipeline is being built (see the roadmap).
+    </p>
+
+    <div class="mt-10">
+      <NewsTabs items={newsItems} client:load />
+    </div>
+  </section>
+</Layout>

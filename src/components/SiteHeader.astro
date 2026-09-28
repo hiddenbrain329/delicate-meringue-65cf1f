@@ -1,0 +1,88 @@
+---
+const navItems = [
+  { href: "/music", label: "Music" },
+  { href: "/videos", label: "Videos" },
+  { href: "/news", label: "News" },
+  { href: "/leaderboard", label: "Leaderboard" },
+];
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 border-b border-white/10 bg-velvet-950/90 backdrop-blur">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="flex h-16 items-center justify-between">
+      <a href="/" class="flex items-center gap-2 font-display text-lg font-semibold tracking-tight text-cream-50">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="13" fill="url(#rv-grad)" />
+          <defs>
+            <linearGradient id="rv-grad" x1="1" y1="1" x2="27" y2="27" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#e0364f" />
+              <stop offset="1" stop-color="#5c2a63" />
+            </linearGradient>
+          </defs>
+        </svg>
+        ReVeluv Hub
+      </a>
+
+      <nav aria-label="Primary" class="hidden md:block">
+        <ul class="flex items-center gap-1">
+          {navItems.map((item) => {
+            const active = currentPath === item.href || currentPath.startsWith(item.href + "/");
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  class:list={[
+                    "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                    active
+                      ? "bg-white/10 text-cream-50"
+                      : "text-cream-100/70 hover:text-cream-50 hover:bg-white/5",
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          class="hidden sm:inline-flex items-center rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-cream-50/90 hover:bg-white/5"
+          title="Login arrives with the community ranking system in Phase 2"
+          aria-disabled="true"
+        >
+          Sign in
+        </button>
+
+        <details class="md:hidden relative">
+          <summary
+            class="list-none cursor-pointer rounded-md p-2 text-cream-50 hover:bg-white/5 [&::-webkit-details-marker]:hidden"
+            aria-label="Open menu"
+          >
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+          </summary>
+          <nav aria-label="Mobile" class="absolute right-0 mt-3 w-52 rounded-xl border border-white/10 bg-velvet-900 p-2 shadow-xl">
+            <ul class="flex flex-col">
+              {navItems.map((item) => (
+                <li>
+                  <a href={item.href} class="block rounded-lg px-3 py-2 text-sm text-cream-50/90 hover:bg-white/5">
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+              <li class="mt-1 border-t border-white/10 pt-1">
+                <span class="block rounded-lg px-3 py-2 text-sm text-cream-50/50">Sign in (Phase 2)</span>
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>

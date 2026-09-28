@@ -1,0 +1,57 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ScatterChart from "../../components/ScatterChart";
+import ConceptBadge from "../../components/ConceptBadge.astro";
+import { songs } from "../../data/songs";
+
+const byQuality = [...songs].sort((a, b) => b.ratings.avgQuality - a.ratings.avgQuality);
+---
+
+<Layout title="Leaderboard" description="Top Red Velvet songs ranked by fan-voted quality, plus a scatter plot comparing quality against the fan-voted Red-to-Velvet spectrum.">
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16">
+    <p class="text-xs font-medium uppercase tracking-wide text-cream-100/50">Signature feature</p>
+    <h1 class="mt-2 font-display text-3xl font-semibold text-cream-50 sm:text-4xl">The leaderboard.</h1>
+    <p class="mt-3 max-w-2xl text-cream-100/65">
+      Every rating below is a fan vote on two axes: how good the song is, and where it sits between
+      bright, poppy "Red" and mature, elegant "Velvet." The plot lines that up against the group's own
+      official concept per era.
+    </p>
+
+    <div class="mt-10 rounded-2xl border border-white/10 bg-velvet-900/50 p-5 sm:p-8">
+      <h2 class="font-display text-lg font-semibold text-cream-50">Quality vs. Red-to-Velvet spectrum</h2>
+      <div class="mt-5">
+        <ScatterChart songs={songs} client:load />
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <h2 class="font-display text-lg font-semibold text-cream-50">Ranked by quality</h2>
+      <ol class="mt-4 space-y-2">
+        {byQuality.map((song, i) => (
+          <li>
+            <a
+              href={`/music/${song.slug}`}
+              class="flex items-center gap-4 rounded-xl border border-white/10 bg-velvet-900/50 p-4 hover:border-white/25"
+            >
+              <span class="w-6 shrink-0 text-center font-display text-lg text-cream-100/40">{i + 1}</span>
+              <div class="flex-1">
+                <p class="font-semibold text-cream-50">{song.title}</p>
+                <p class="text-sm text-cream-100/50">{song.artist} · {song.era}</p>
+              </div>
+              <ConceptBadge concept={song.concept} />
+              <div class="w-16 shrink-0 text-right">
+                <p class="font-display text-lg font-semibold text-cream-50">{song.ratings.avgQuality.toFixed(1)}</p>
+                <p class="text-[11px] text-cream-100/40">{song.ratings.count} votes</p>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <p class="mt-8 text-xs text-cream-100/40">
+      Ratings shown are fixture/demo data for this preview build — see the roadmap for when live voting launches.
+      Official concept position is a rough per-era classification (Red / Velvet / Red × Velvet), not a claim SM Entertainment has published numerically.
+    </p>
+  </section>
+</Layout>

@@ -1,0 +1,60 @@
+---
+import type { Song } from "../data/songs";
+import ConceptBadge from "./ConceptBadge.astro";
+import { formatDate } from "../lib/format";
+
+interface Props {
+  song: Song;
+}
+const { song } = Astro.props;
+
+// Gradient tile stands in for album art (no copyrighted cover images) — its hue
+// mix reflects the song's own fan-voted Red-to-Velvet position.
+const t = song.ratings.avgSpectrum / 100;
+const stop1 = mix("#f0516b", "#8a5aa0", t);
+const stop2 = mix("#e0364f", "#3d1a4a", t);
+
+function mix(a: string, b: string, amt: number): string {
+  const pa = hexToRgb(a);
+  const pb = hexToRgb(b);
+  const r = Math.round(pa.r + (pb.r - pa.r) * amt);
+  const g = Math.round(pa.g + (pb.g - pa.g) * amt);
+  const bl = Math.round(pa.b + (pb.b - pa.b) * amt);
+  return `rgb(${r},${g},${bl})`;
+}
+function hexToRgb(hex: string) {
+  const n = parseInt(hex.slice(1), 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+---
+
+<a
+  href={`/music/${song.slug}`}
+  class="group block overflow-hidden rounded-2xl border border-white/10 bg-velvet-900/60 transition-transform hover:-translate-y-1 focus-visible:-translate-y-1"
+>
+  <div
+    class="relative flex h-32 items-end p-3"
+    style={`background-image: linear-gradient(135deg, ${stop1}, ${stop2});`}
+  >
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.25),transparent_55%)]"></div>
+    <span class="relative rounded-full bg-black/30 px-2 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+      {song.era}
+    </span>
+  </div>
+  <div class="p-4">
+    <div class="flex items-start justify-between gap-2">
+      <div>
+        <h3 class="font-display text-base font-semibold text-cream-50 group-hover:text-gradient-rv">{song.title}</h3>
+        <p class="text-sm text-cream-100/55">{song.artist} · {song.album}</p>
+      </div>
+      <div class="shrink-0 text-right">
+        <p class="font-display text-lg font-semibold text-cream-50">{song.ratings.avgQuality.toFixed(1)}</p>
+        <p class="text-[11px] text-cream-100/40">{song.ratings.count} votes</p>
+      </div>
+    </div>
+    <div class="mt-3 flex items-center justify-between">
+      <ConceptBadge concept={song.concept} />
+      <time datetime={song.releaseDate} class="text-[11px] text-cream-100/40">{formatDate(song.releaseDate)}</time>
+    </div>
+  </div>
+</a>

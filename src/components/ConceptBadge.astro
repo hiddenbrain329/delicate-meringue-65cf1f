@@ -1,0 +1,21 @@
+---
+import type { Concept } from "../data/songs";
+import { CONCEPT_COLOR } from "../lib/palette";
+
+interface Props {
+  concept: Concept;
+  surface?: "dark" | "light";
+}
+
+const { concept, surface = "dark" } = Astro.props;
+const color = CONCEPT_COLOR[concept];
+const hex = surface === "dark" ? color.dark : color.light;
+---
+
+<span
+  class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold"
+  style={`color:${hex}; border-color:${hex}66; background:${hex}1a;`}
+>
+  <span class="h-1.5 w-1.5 rounded-full" style={`background:${hex}`}></span>
+  {color.label}
+</span>

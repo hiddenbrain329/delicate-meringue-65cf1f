@@ -1,0 +1,108 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ConceptBadge from "../../components/ConceptBadge.astro";
+import SpectrumBar from "../../components/SpectrumBar.astro";
+import DistributionBars from "../../components/DistributionBars.astro";
+import RatingWidget from "../../components/RatingWidget";
+import { songs, getSongBySlug } from "../../data/songs";
+import { formatDate } from "../../lib/format";
+
+export function getStaticPaths() {
+  return songs.map((song) => ({ params: { slug: song.slug } }));
+}
+
+const { slug } = Astro.params;
+const song = getSongBySlug(slug as string)!;
+---
+
+<Layout title={song.title} description={`${song.title} by ${song.artist} — official video, release info, and fan ratings on ReVeluv Hub.`}>
+  <section class="mx-auto max-w-4xl px-4 sm:px-6 py-12 sm:py-16">
+    <a href="/music" class="text-sm font-medium text-cream-100/60 hover:text-cream-50">← Back to discography</a>
+
+    <div class="mt-4 flex flex-wrap items-start justify-between gap-4">
+      <div>
+        <p class="text-xs font-medium uppercase tracking-wide text-cream-100/50">{song.era}</p>
+        <h1 class="mt-1 font-display text-3xl font-semibold text-cream-50 sm:text-4xl">
+          {song.title}
+          {song.titleKo && <span class="ml-2 text-xl text-cream-100/40">{song.titleKo}</span>}
+        </h1>
+        <p class="mt-2 text-cream-100/60">{song.artist} · {song.album}</p>
+      </div>
+      <ConceptBadge concept={song.concept} />
+    </div>
+
+    <div class="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-velvet-900/60">
+      {song.video ? (
+        <div class="aspect-video w-full">
+          <iframe
+            class="h-full w-full"
+            src={`https://www.youtube.com/embed/${song.video.id}`}
+            title={`${song.title} — official video`}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      ) : (
+        <div class="flex aspect-video w-full flex-col items-center justify-center gap-3 p-8 text-center">
+          <p class="text-cream-100/60">No verified official embed on file yet for this track.</p>
+          <a
+            href={`https://www.youtube.com/results?search_query=${encodeURIComponent(`${song.artist} ${song.title}`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm font-semibold text-red-400 hover:underline"
+          >
+            Search on YouTube →
+          </a>
+        </div>
+      )}
+    </div>
+
+    <dl class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-wide text-cream-100/45">Release date</dt>
+        <dd class="mt-1 text-sm text-cream-50"><time datetime={song.releaseDate}>{formatDate(song.releaseDate)}</time></dd>
+      </div>
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-wide text-cream-100/45">Release type</dt>
+        <dd class="mt-1 text-sm text-cream-50 capitalize">{song.releaseType}</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-wide text-cream-100/45">Label</dt>
+        <dd class="mt-1 text-sm text-cream-50">{song.label}</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-wide text-cream-100/45">Genres</dt>
+        <dd class="mt-1 text-sm text-cream-50">{song.genres.join(", ")}</dd>
+      </div>
+    </dl>
+
+    <section class="mt-10 rounded-2xl border border-white/10 bg-velvet-900/50 p-5 sm:p-6">
+      <h2 class="font-display text-lg font-semibold text-cream-50">Fan ratings</h2>
+      <div class="mt-4 grid gap-8 sm:grid-cols-2">
+        <div>
+          <p class="text-sm text-cream-100/60">Average quality</p>
+          <p class="mt-1 font-display text-3xl font-semibold text-cream-50">
+            {song.ratings.avgQuality.toFixed(1)}<span class="text-base text-cream-100/40"> / 10</span>
+          </p>
+          <p class="mt-1 text-xs text-cream-100/40">{song.ratings.count} fan ratings</p>
+          <div class="mt-4">
+            <DistributionBars distribution={song.ratings.distribution} surface="dark" />
+          </div>
+        </div>
+        <div>
+          <p class="text-sm text-cream-100/60">Red-to-Velvet spectrum</p>
+          <p class="mt-1 text-xs text-cream-100/40">Fan average vs. the track's official concept position</p>
+          <div class="mt-4">
+            <SpectrumBar fanValue={song.ratings.avgSpectrum} concept={song.concept} showOfficial size="lg" />
+          </div>
+          <p class="mt-3 text-xs text-cream-100/40">Filled dot = fan average · pale tick = official concept</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="mt-8">
+      <RatingWidget songTitle={song.title} client:load />
+    </div>
+  </section>
+</Layout>

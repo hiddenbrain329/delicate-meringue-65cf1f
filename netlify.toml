@@ -1,0 +1,18 @@
+[build]
+  command = "npm install && npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[images]
+  remote_images = [
+    "https://i\\.ytimg\\.com/.*",
+    "https://yt3\\.googleusercontent\\.com/.*"
+  ]
+
+# The news aggregator (a Netlify Scheduled Function) arrives in a later phase — see PLAN.md.
+# It will export `config = { schedule: "0 */4 * * *" }` directly from
+# netlify/functions/aggregate-news.mts; scheduled functions are registered in the
+# function file itself, not here.

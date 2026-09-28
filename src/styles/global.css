@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", "Iowan Old Style", serif;
+  --font-body: "Sora", system-ui, sans-serif;
+
+  /* Cream / Red end of the spectrum */
+  --color-cream-50: #fdf7f2;
+  --color-cream-100: #fbe9e4;
+  --color-cream-200: #f6d6d2;
+  --color-red-400: #f0518c;
+  --color-red-500: #e0364f;
+  --color-red-600: #d81b60;
+  --color-red-700: #b3123f;
+
+  /* Mid-gradient */
+  --color-rose-500: #c23a63;
+  --color-plum-300: #c07fc0;
+  --color-plum-400: #a878d4;
+
+  /* Velvet end of the spectrum */
+  --color-velvet-500: #7b3f9e;
+  --color-velvet-700: #5c2a63;
+  --color-velvet-800: #3d1a4a;
+  --color-velvet-900: #241226;
+  --color-velvet-950: #180a1c;
+
+  /* Hybrid / gold accent (used for "Red x Velvet" hybrid classification) */
+  --color-gold-500: #a8891f;
+  --color-gold-400: #b8892f;
+
+  /* Ink */
+  --color-ink-950: #1c1017;
+  --color-ink-50: #fdf7f2;
+
+  --animate-drift: drift 18s ease-in-out infinite;
+
+  @keyframes drift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-2%, 3%, 0) scale(1.05); }
+  }
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-velvet-950);
+  color: var(--color-ink-50);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background-color: var(--color-red-500);
+  color: var(--color-cream-50);
+}
+
+/* Keep focus rings visible for keyboard users — never remove focus-visible outlines. */
+:focus-visible {
+  outline: 3px solid var(--color-red-400);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.text-gradient-rv {
+  background-image: linear-gradient(100deg, var(--color-red-500) 0%, var(--color-rose-500) 45%, var(--color-velvet-500) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.rv-divider {
+  height: 3px;
+  border-radius: 999px;
+  background-image: linear-gradient(90deg, var(--color-red-500), var(--color-plum-400), var(--color-velvet-700));
+}

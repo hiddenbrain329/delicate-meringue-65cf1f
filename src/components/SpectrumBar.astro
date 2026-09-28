@@ -1,0 +1,41 @@
+---
+import type { Concept } from "../data/songs";
+
+interface Props {
+  fanValue: number; // 0-100
+  concept?: Concept;
+  showOfficial?: boolean;
+  size?: "sm" | "lg";
+}
+
+const { fanValue, concept, showOfficial = false, size = "lg" } = Astro.props;
+
+const OFFICIAL_POSITION: Record<Concept, number> = { red: 8, velvet: 92, hybrid: 50 };
+const officialValue = concept ? OFFICIAL_POSITION[concept] : undefined;
+const trackHeight = size === "lg" ? "h-3" : "h-2";
+---
+
+<div>
+  <div class={`relative w-full ${trackHeight} rounded-full`} style="background: linear-gradient(90deg, #e0364f 0%, #f6d6d2 22%, #c07fc0 55%, #5c2a63 100%);">
+    <div
+      class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-5 w-5 rounded-full border-2 border-cream-50 shadow-md"
+      style={`left:${Math.max(2, Math.min(98, fanValue))}%; background:#1c1017;`}
+      role="img"
+      aria-label={`Fan-voted spectrum position: ${Math.round(fanValue)} of 100 toward Velvet`}
+    >
+    </div>
+    {showOfficial && officialValue !== undefined && (
+      <div
+        class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-2 w-0.5 bg-cream-50/90"
+        style={`left:${officialValue}%;`}
+        role="img"
+        aria-label={`Official concept position: ${officialValue} of 100`}
+      >
+      </div>
+    )}
+  </div>
+  <div class="mt-1.5 flex justify-between text-[11px] font-medium uppercase tracking-wide text-cream-100/50">
+    <span>Red</span>
+    <span>Velvet</span>
+  </div>
+</div>
